@@ -2,7 +2,7 @@
 Using the any device with Alexa simply tell Alexa the activity you did roughly following this format.  
 Note that anytime you see curly braces, that is where you can specify the input  
 
-For example, one input might be: "how many calories did I burn if i ran 4 miles in 35 minutes
+For example, one input might be: "how many calories did I burn if i ran 4 miles in 35 minutes  
  how many calories did i burn if i ran {distance} {distance_unit} in {duration}  
  i ran {distance} {distance_unit} in {duration}  
  i biked {distance} {distance_unit} in {duration}  
