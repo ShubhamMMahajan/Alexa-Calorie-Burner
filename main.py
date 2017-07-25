@@ -4,20 +4,13 @@ Created on Jul 14, 2017
 @author: shubham
 '''
 
-
-WEIGHT = 150
-
 import speed_based
 import intensity_based
 import categorical_based
 import numerical_based
 import other
 
-
-
-
-
-
+WEIGHT = 150
  
 # --------------- Helpers that build all of the responses ----------------------
 
@@ -52,31 +45,21 @@ def build_response(session_attributes, speechlet_response):
 
 # --------------- Functions that control the skill's behavior ------------------
 
-def get_welcome_response(session):
+def help_message():
+    output_message = "Simply tell Alexa the activity you did to see how many calories you burned."
+    return build_response({}, build_speechlet_response("", output_message, "", True))
 
-     session_attributes = {}
-     
-    
-     #print(session.keys())
-     if session == "":
-         name = "No one"
-         card_title = "Welcome"
-     else:
-        name = session['slots']['MyName']['value']
-        card_title = session['name']
-     speech_output = name + " is in the house"
-     should_end_session = True
-     return build_response(session_attributes, build_speechlet_response(
-     card_title, speech_output, None, should_end_session))
+def welcome_message():
+    output_message = "Welcome to Calorie Burn Calculator, to get started tell Alexa the activity you did and how long it took you to do it to see how many calories you burned."
+    return build_response({}, build_speechlet_response("", output_message, "", True))
 
 def print_output(intent, calories):
     session_attributes = {}
     card_title = intent['name']
-    speech_output = "You burned " + str(round(calories)) + " calories"
+    speech_output = "You burned " + str(round(calories)) + " calories."
     should_end_session = True
     return build_response(session_attributes, build_speechlet_response(
     card_title, speech_output, None, should_end_session))
-
 
 def handle_session_end_request():
     card_title = "Session Ended"
@@ -86,60 +69,6 @@ def handle_session_end_request():
     should_end_session = True
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
-
-
-def create_favorite_color_attributes(favorite_color):
-    return {"favoriteColor": favorite_color}
-
-
-def set_color_in_session(intent, session):
-    """ Sets the color in the session and prepares the speech to reply to the
-    user.
-    """
-
-    card_title = intent['name']
-    session_attributes = {}
-    should_end_session = False
-
-    if 'Color' in intent['slots']:
-        favorite_color = intent['slots']['Color']['value']
-        session_attributes = create_favorite_color_attributes(favorite_color)
-        speech_output = "I now know your favorite color is " + \
-                        favorite_color + \
-                        ". You can ask me your favorite color by saying, " \
-                        "what's my favorite color?"
-        reprompt_text = "You can ask me your favorite color by saying, " \
-                        "what's my favorite color?"
-    else:
-        speech_output = "I'm not sure what your favorite color is. " \
-                        "Please try again."
-        reprompt_text = "I'm not sure what your favorite color is. " \
-                        "You can tell me your favorite color by saying, " \
-                        "my favorite color is red."
-    return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))
-
-
-def get_color_from_session(intent, session):
-    session_attributes = {}
-    reprompt_text = None
-
-    if session.get('attributes', {}) and "favoriteColor" in session.get('attributes', {}):
-        favorite_color = session['attributes']['favoriteColor']
-        speech_output = "Your favorite color is " + favorite_color + \
-                        ". Goodbye."
-        should_end_session = True
-    else:
-        speech_output = "I'm not sure what your favorite color is. " \
-                        "You can say, my favorite color is red."
-        should_end_session = False
-
-    # Setting reprompt_text to None signifies that we do not want to reprompt
-    # the user. If the user does not respond or says something that is not
-    # understood, the session will end.
-    return build_response(session_attributes, build_speechlet_response(
-        intent['name'], speech_output, reprompt_text, should_end_session))
-
 
 # --------------- Events ------------------
 
@@ -157,18 +86,12 @@ def on_launch(launch_request, session):
     #intent = launch_request['intent']
     session_attributes = {}
     should_end_session = True
-    card_title = session["name"]
-    speech_output = "Please tell me your activity to see how many calories you burned"
+    
 
     print("on_launch requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
-    #return get_welcome_response("")
-    return build_response(session_attributes, build_speechlet_response(
-     card_title, speech_output, None, should_end_session))
-    
-
-
+    return welcome_message()
 def on_intent(intent_request, session):
     """ Called when the user specifies an intent for this skill """
 
@@ -178,73 +101,41 @@ def on_intent(intent_request, session):
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
-
-    # Dispatch to your skill's intent handlers
-    if intent_name == "RunningCalories":        
-        calories = speed_based.get_running_calories(intent, WEIGHT)
-        return print_output(intent, calories)    
-    elif intent_name == "BikingCalories":
-        calories = speed_based.get_biking_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "WalkingCalories":
-        calories = speed_based.get_walking_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SkiingCalories":
-        calories = speed_based.get_skiing_calories(intent, WEIGHT)
-        return print_output(intent, calories) 
-    elif intent_name == "CyclingCalories":
-        calories = intensity_based.get_cycling_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "DancingCalories":
-        calories = intensity_based.get_dancing_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "RowingCalories":
-        calories = intensity_based.get_rowing_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SwimmingCalories":
-        calories = categorical_based.get_swimming_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "PushUpCalories":
-        calories = numerical_based.get_pushup_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SitUpCalories":
-        calories = numerical_based.get_situp_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SquatCalories":
-        calories = numerical_based.get_squat_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "PullUpCalories":
-        calories = numerical_based.get_pullup_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SittingCalories":
-        calories = other.get_sitting_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "JumpRopeCalories":
-        calories = other.get_jumprope_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "ChoresCalories":
-        calories = other.get_chores_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "YogaCalories":
-        calories = other.get_yoga_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "MowingCalories":
-        calories = other.get_mowing_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "ShovelingCalories":
-        calories = other.get_shoveling_calories(intent, WEIGHT)
-        return print_output(intent, calories)
-    elif intent_name == "SleepingCalories":
-        calories = other.get_sleeping_calories(intent, WEIGHT)
-        return print_output(intent, calories)
+    intent_name_dict = {"RunningCalories": speed_based.get_running_calories,
+                        "BikingCalories": speed_based.get_biking_calories,
+                        "WalkingCalories": speed_based.get_walking_calories,
+                        "SkiingCalories": speed_based.get_skiing_calories,
+                        "CyclingCalories": intensity_based.get_cycling_calories,
+                        "DancingCalories": intensity_based.get_dancing_calories,
+                        "RowingCalories": intensity_based.get_rowing_calories,
+                        "SwimmingCalories": categorical_based.get_swimming_calories,
+                        "PushUpCalories": numerical_based.get_pushup_calories,
+                        "SitUpCalories": numerical_based.get_situp_calories,
+                        "SquatCalories": numerical_based.get_squat_calories,
+                        "PullUpCalories": numerical_based.get_pullup_calories,
+                        "SittingCalories": other.get_sitting_calories,
+                        "JumpRopeCalories": other.get_jumprope_calories,
+                        "ChoresCalories": other.get_chores_calories,
+                        "YogaCalories": other.get_yoga_calories,
+                        "MowingCalories": other.get_mowing_calories,
+                        "ShovelingCalories": other.get_shoveling_calories,
+                        "SleepingCalories": other.get_sleeping_calories}
     
+    # Dispatch to your skill's intent handlers
+    for intent_name_in_dict in intent_name_dict.keys():
+        if intent_name == intent_name_in_dict:
+            calories = intent_name_dict[intent_name_in_dict](intent, WEIGHT)
+            return print_output(intent, calories)
+
     ##DEFAULT AMAZON INTENTS
-    elif intent_name == "AMAZON.HelpIntent":
-        return get_welcome_response()
-    elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
-        return handle_session_end_request()
-    else:
-        raise ValueError("Invalid intent")
+    else: 
+        if intent_name == "AMAZON.HelpIntent":
+            return help_message()
+        elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
+            return handle_session_end_request()
+        else:
+            raise ValueError("Invalid intent")
+        
 
 
 def on_session_ended(session_ended_request, session):
@@ -255,7 +146,6 @@ def on_session_ended(session_ended_request, session):
     print("on_session_ended requestId=" + session_ended_request['requestId'] +
           ", sessionId=" + session['sessionId'])
     # add cleanup logic here
-
 
 # --------------- Main handler ------------------
 
