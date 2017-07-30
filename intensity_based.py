@@ -9,6 +9,10 @@ import basic_calculations
 def get_cycling_calories(intent, WEIGHT):
     '''returns the number of calories burned by cycling in place'''
     intensity, time = get_data(intent)
+    if intensity == "intensity":
+        return "intensity"
+    if time == "time":
+        return "time"
     calories = calculate_cycling_calories(intensity, time, WEIGHT)
     return calories
     
@@ -24,6 +28,10 @@ def calculate_cycling_calories(intensity, time, WEIGHT):
 def get_dancing_calories(intent, WEIGHT):
     '''returns the number of calories burned by dancing'''
     intensity, time = get_data(intent)
+    if intensity == "intensity":
+        return "intensity"
+    if time == "time":
+        return "time"
     calories = calculate_dancing_calories(intensity, time, WEIGHT)
     return calories
 
@@ -39,6 +47,10 @@ def calculate_dancing_calories(intensity, time, WEIGHT):
 def get_rowing_calories(intent, WEIGHT):
     '''returns the number of calories burned by rowing'''
     intensity, time = get_data(intent)
+    if intensity == "intensity":
+        return "intensity"
+    if time == "time":
+        return "time"
     calories = calculate_rowing_calories(intensity, time, WEIGHT)
     return calories
 
@@ -53,8 +65,14 @@ def calculate_rowing_calories(intensity, time, WEIGHT):
 
 def get_data(intent):
     '''gets the intensity as well as time spent on exercise'''
-    intensity = intense_string(intent)
-    time = basic_calculations.duration_minutes(intent['slots']['duration']['value'])
+    try:
+        intensity = intense_string(intent)
+    except:
+        return ("intensity", None)
+    try:
+        time = basic_calculations.duration_minutes(intent['slots']['duration']['value'])
+    except:
+        return (None, "time")
     return (intensity, time)
 
 def intense_string(intent):

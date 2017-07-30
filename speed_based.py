@@ -10,6 +10,13 @@ from collections import OrderedDict
 def get_running_calories(intent, WEIGHT):
     '''returns the amount of calories burned when running'''
     pace, time = get_data(intent)
+    print(pace)
+    if pace == "":
+        return "distance"
+    if time == "":
+        return "time"
+    if pace == "unit":
+        return "distance unit"
     calories = calculate_running_calories(pace, time, WEIGHT)
     return calories    
 
@@ -28,6 +35,12 @@ def calculate_running_calories(pace, time, WEIGHT):
 def get_biking_calories(intent, WEIGHT):
     '''returns the amount of calories burned when biking'''
     pace, time = get_data(intent)
+    if pace == "":
+        return "distance"
+    if time == "":
+        return "time"
+    if pace == "unit":
+        return "distance unit"
     calories = calculate_biking_calories(pace, time, WEIGHT)
     return calories
 
@@ -46,6 +59,12 @@ def calculate_biking_calories(pace, time, WEIGHT):
 def get_walking_calories(intent, WEIGHT):
     '''returns the amount of calories burned when walking'''
     pace, time = get_data(intent)
+    if pace == "":
+        return "distance"
+    if time == "":
+        return "time"
+    if pace == "unit":
+        return "distance unit"
     calories = calculate_walking_calories(pace, time, WEIGHT)
     return calories
 
@@ -64,6 +83,12 @@ def calculate_walking_calories(pace, time, WEIGHT):
 def get_skiing_calories(intent, WEIGHT):
     '''returns the amount of calories burned when skiing'''
     pace, time = get_data(intent)
+    if pace == "":
+        return "distance"
+    if time == "":
+        return "time"
+    if pace == "unit":
+        return "distance unit"
     calories = calculate_skiing_calories(pace, time, WEIGHT)
     return calories
 
@@ -81,17 +106,26 @@ def calculate_skiing_calories(pace, time, WEIGHT):
     
 def get_data(intent):
     '''gets the distance and time and returns the pace and time'''
-    distance = int(intent['slots']['distance']['value'])
-    distance_unit = intent['slots']['distance_unit']['value']
-    time = basic_calculations.duration_minutes(intent['slots']['duration']['value'])
-    if distance_unit == "kilometer" or distance_unit == "kilometers":
-        distance = convert_to_mile(distance)
-    elif distance_unit == "mile" or "miles":
-        distance = distance
-    else:
-        distance = 0
-    pace = calculate_pace(distance, time)
-    return (pace, time)      
+    time = ""
+    distance = ""
+    try:
+        distance = int(intent['slots']['distance']['value'])
+        try:
+            distance_unit = intent['slots']['distance_unit']['value']
+        except:
+            return("unit", None)
+        time = basic_calculations.duration_minutes(intent['slots']['duration']['value'])
+        if distance_unit == "kilometer" or distance_unit == "kilometers":
+            distance = convert_to_mile(distance)
+        elif distance_unit == "mile" or distance_unit == "miles":           
+            distance = distance
+        else:            
+            return ("unit", None)
+        pace = calculate_pace(distance, time)
+        return (pace, time)
+    except:
+        return (distance, time)
+              
 
 def convert_to_mile(kilometer):
     '''converts kilometers to mile'''

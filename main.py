@@ -4,6 +4,8 @@ Created on Jul 14, 2017
 @author: shubham
 '''
 
+import re
+
 import speed_based
 import intensity_based
 import categorical_based
@@ -11,6 +13,7 @@ import numerical_based
 import other
 
 WEIGHT = 150
+#TOTAL_CALORIES = 0
  
 # --------------- Helpers that build all of the responses ----------------------
 
@@ -22,8 +25,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
         },
         'card': {
             'type': 'Simple',
-            'title': "SessionSpeechlet - " + title,
-            'content': "SessionSpeechlet - " + output
+            'title': title,
+            'content': output
         },
         'reprompt': {
             'outputSpeech': {
@@ -47,19 +50,28 @@ def build_response(session_attributes, speechlet_response):
 
 def help_message():
     output_message = "Simply tell Alexa the activity you did to see how many calories you burned."
-    return build_response({}, build_speechlet_response("", output_message, "", True))
+    return build_response({}, build_speechlet_response("Help", output_message, "", False))
+
+def help_message_2(missing_value):
+    output_message = "Error, you either forgot to specify or invalidly specified the " + missing_value
+    return build_response({}, build_speechlet_response("Help", output_message, "", False))
 
 def welcome_message():
     output_message = "Welcome to Calorie Burn Calculator, to get started tell Alexa the activity you did and how long it took you to do it to see how many calories you burned."
-    return build_response({}, build_speechlet_response("", output_message, "", True))
+    return build_response({}, build_speechlet_response("Welcome", output_message, "", False))
 
 def print_output(intent, calories):
     session_attributes = {}
     card_title = intent['name']
+    intent_name_list = re.findall('[A-Z][a-z]*', card_title)
+    intent_name = ""
+    for index in range(len(intent_name_list) - 1):
+        intent_name += intent_name_list[index] + " "
     speech_output = "You burned " + str(round(calories)) + " calories."
-    should_end_session = True
+    reprompt_text = "If you want figure out how many calories you burned doing another activity please tell me now."
+    should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
-    card_title, speech_output, None, should_end_session))
+    intent_name + "\n", speech_output, reprompt_text, should_end_session))
 
 def handle_session_end_request():
     card_title = "Session Ended"
@@ -67,6 +79,7 @@ def handle_session_end_request():
                     "Have a nice day! "
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
+    
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
 
@@ -85,7 +98,7 @@ def on_launch(launch_request, session):
     """
     #intent = launch_request['intent']
     session_attributes = {}
-    should_end_session = True
+    should_end_session = False
     
 
     print("on_launch requestId=" + launch_request['requestId'] +
@@ -124,7 +137,10 @@ def on_intent(intent_request, session):
     # Dispatch to your skill's intent handlers
     for intent_name_in_dict in intent_name_dict.keys():
         if intent_name == intent_name_in_dict:
+           
             calories = intent_name_dict[intent_name_in_dict](intent, WEIGHT)
+            if type(calories) != int and type(calories) != float:
+                return help_message_2(calories)
             return print_output(intent, calories)
 
     ##DEFAULT AMAZON INTENTS
@@ -145,6 +161,7 @@ def on_session_ended(session_ended_request, session):
     """
     print("on_session_ended requestId=" + session_ended_request['requestId'] +
           ", sessionId=" + session['sessionId'])
+    handle_session_end_request()
     # add cleanup logic here
 
 # --------------- Main handler ------------------
@@ -175,7 +192,7 @@ def lambda_handler(event, context):
     elif event['request']['type'] == "IntentRequest":
         return on_intent(event['request'], event['session'])
     elif event['request']['type'] == "SessionEndedRequest":
-        return on_session_ended(event['request'], event['session'])
+        return handle_session_end_request()
 
 
 
