@@ -69,7 +69,7 @@ def print_output(intent, calories):
         intent_name += intent_name_list[index] + " "
     speech_output = "You burned " + str(round(calories)) + " calories."
     reprompt_text = "If you want figure out how many calories you burned doing another activity please tell me now."
-    should_end_session = False
+    should_end_session = True
     return build_response(session_attributes, build_speechlet_response(
     intent_name + "\n", speech_output, reprompt_text, should_end_session))
 
