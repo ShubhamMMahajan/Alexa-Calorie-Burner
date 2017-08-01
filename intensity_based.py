@@ -87,4 +87,4 @@ def intense_string(intent):
     elif 'hard' in intense_word or 'intense' in intense_word or 'vigor' in intense_word:
         return 'intense'
     else:
-        return 'moderate'
+        raise Exception
