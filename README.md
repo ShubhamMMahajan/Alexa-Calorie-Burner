@@ -4,7 +4,8 @@ Note that anytime you see curly braces, that is where you can specify the input
 
 For example, one input might be: "how many calories did I burn if i ran 4 miles in 35 minutes"  
 Activity  |                                  Command  
-----------|-------------------------------------------------------------------------------------  
+|---------|-------------------------------------------------------------------------------------  
+  
 Running   | how many calories did i burn if i ran {distance} {distance_unit} in {duration}  
 Running   | i ran {distance} {distance_unit} in {duration}  
 Running   | i run {distance} {distance_unit} in {duration}  
