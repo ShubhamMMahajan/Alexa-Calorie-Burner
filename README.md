@@ -3,52 +3,52 @@ Using the any device with Alexa simply tell Alexa the activity you did roughly f
 Note that anytime you see curly braces, that is where you can specify the input  
 
 For example, one input might be: "how many calories did I burn if i ran 4 miles in 35 minutes"  
-Activity          | Command
-------------------|---------
-RunningCalories   | how many calories did i burn if i ran {distance} {distance_unit} in {duration}
-RunningCalories   | i ran {distance} {distance_unit} in {duration}
-RunningCalories   | i run {distance} {distance_unit} in {duration}
-BikingCalories    | i biked {distance} {distance_unit} in {duration}
-BikingCalories    | i bike {distance} {distance_unit} in {duration}
-BikingCalories    | how many calories did i burn if i biked {distance} {distance_unit} in {duration}
-WalkingCalories   | how many calories did i burn if i walked {distance} {distance_unit} in {duration}
-WalkingCalories   | i walked {distance} {distance_unit} in {duration}
-WalkingCalories   | i walk {distance} {distance_unit} in {duration}
-SkiingCalories    | how many calories did i burn if i skied {distance} {distance_unit} in {duration}
-SkiingCalories    | i skied {distance} {distance_unit} in {duration}
-SkiingCalories    | i ski {distance} {distance_unit} in {duration}
-CyclingCalories   | how many calories did i burn if i {intensity_unit} cycled for {duration}
-CyclingCalories   | i cycled {intensity_unit} for {duration}
-CyclingCalories   | i cycle {intensity_unit} for {duration}
-CyclingCalories   | i {intensity_unit} cycled for {duration}
-CyclingCalories   | i {intensity_unit} cycle for {duration}
-DancingCalories   | how many calories did i burn if i {intensity_unit} danced for {duration}
-DancingCalories   | i danced {intensity_unit} for {duration}
-DancingCalories   | i dance {intensity_unit} for {duration}
-DancingCalories   | i {intensity_unit} danced for {duration}
-DancingCalories   | i {intensity_unit} dance for {duration}
-RowingCalories    | how many calories did i burn if i {intensity_unit} rowed for {duration}
-RowingCalories    | i rowed {intensity_unit} for {duration}
-RowingCalories    | i row {intensity_unit} for {duration}
-RowingCalories    | i {intensity_unit} rowed for {duration}
-RowingCalories    | i {intensity_unit} row for {duration}
-SwimmingCalories  | how many calories did i burn if I swam {classifying_unit} for {duration}
-SwimmingCalories  | i did {classifying_unit} for {duration}
-SittingCalories   | how many calories did i burn if i sat for {duration}
-SittingCalories   | i sit for {duration}
-JumpRopeCalories  | how many calories did i burn if i jump roped for {duration}
-JumpRopeCalories  | jump rope for {duration}
-ChoresCalories    | how many calories did i burn if i did chores for {duration}
-ChoresCalories    | did chores for {duration}
-YogaCalories      | how many calories did i burn if i did yoga for {duration}
-YogaCalories      | did yoga for {duration}
-MowingCalories    | how many calories did i burn if i mowed the lawn for {duration}
-MowingCalories    | i mowed for {duration}
-ShovelingCalories | how many calories did i burn if i shoveled snow for {duration}
-ShovelingCalories | i shoveled for {duration}
-SleepingCalories  | how many calories did i burn if i slept for {duration}
-SleepingCalories  | i was sleeping for {duration}
-PushUpCalories    | how many calories did i burn if I did {number} pushups
-SitUpCalories     | how many calories did i burn if I did {number} situps
-SquatCalories     | how many calories did i burn if I did {number} squats
-PullUpCalories    | how many calories did i burn if I did {number} pullups
+Activity  |                                  Command  
+----------|-------------------------------------------------------------------------------------  
+Running   | how many calories did i burn if i ran {distance} {distance_unit} in {duration}  
+Running   | i ran {distance} {distance_unit} in {duration}  
+Running   | i run {distance} {distance_unit} in {duration}  
+Biking    | i biked {distance} {distance_unit} in {duration}  
+Biking    | i bike {distance} {distance_unit} in {duration}  
+Biking    | how many calories did i burn if i biked {distance} {distance_unit} in {duration}  
+Walking   | how many calories did i burn if i walked {distance} {distance_unit} in {duration}  
+Walking   | i walked {distance} {distance_unit} in {duration}  
+Walking   | i walk {distance} {distance_unit} in {duration}  
+Skiing    | how many calories did i burn if i skied {distance} {distance_unit} in {duration}  
+Skiing    | i skied {distance} {distance_unit} in {duration}  
+Skiing    | i ski {distance} {distance_unit} in {duration}  
+Cycling   | how many calories did i burn if i {intensity_unit} cycled for {duration}  
+Cycling   | i cycled {intensity_unit} for {duration}  
+Cycling   | i cycle {intensity_unit} for {duration}  
+Cycling   | i {intensity_unit} cycled for {duration}  
+Cycling   | i {intensity_unit} cycle for {duration}  
+Dancing   | how many calories did i burn if i {intensity_unit} danced for {duration}  
+Dancing   | i danced {intensity_unit} for {duration}  
+Dancing   | i dance {intensity_unit} for {duration}  
+Dancing   | i {intensity_unit} danced for {duration}  
+Dancing   | i {intensity_unit} dance for {duration}  
+Rowing    | how many calories did i burn if i {intensity_unit} rowed for {duration}  
+Rowing    | i rowed {intensity_unit} for {duration}  
+Rowing    | i row {intensity_unit} for {duration}  
+Rowing    | i {intensity_unit} rowed for {duration}  
+Rowing    | i {intensity_unit} row for {duration}  
+Swimming  | how many calories did i burn if I swam {classifying_unit} for {duration}  
+Swimming  | i did {classifying_unit} for {duration}  
+Sitting   | how many calories did i burn if i sat for {duration}  
+Sitting   | i sit for {duration}  
+JumpRope  | how many calories did i burn if i jump roped for {duration}  
+JumpRope  | jump rope for {duration}  
+Chores    | how many calories did i burn if i did chores for {duration}  
+Chores    | did chores for {duration}  
+Yoga      | how many calories did i burn if i did yoga for {duration}  
+Yoga      | did yoga for {duration}  
+Mowing    | how many calories did i burn if i mowed the lawn for {duration}  
+Mowing    | i mowed for {duration}  
+Shoveling | how many calories did i burn if i shoveled snow for {duration}  
+Shoveling | i shoveled for {duration}  
+Sleeping  | how many  did i burn if i slept for {duration}  
+Sleeping  | i was sleeping for {duration}  
+PushUp    | how many calories did i burn if I did {number} pushups  
+SitUp     | how many calories did i burn if I did {number} situps  
+Squat     | how many calories did i burn if I did {number} squats  
+PullUp    | how many calories did i burn if I did {number} pullups  
